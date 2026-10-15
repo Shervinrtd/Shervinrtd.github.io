@@ -1,0 +1,894 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alireza Shahidiani</title>
+<meta name="description" content="Alireza Shahidiani, M.Sc. Artificial Intelligence student at the University of Bologna. LLMs, RAG, NLP and AI security.">
+<meta property="og:title" content="Alireza Shahidiani">
+<meta property="og:description" content="Alireza Shahidiani, M.Sc. Artificial Intelligence student at the University of Bologna. LLMs, RAG, NLP and AI security.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shervinrtd.github.io/">
+<meta property="og:image" content="https://shervinrtd.github.io/headshot.webp">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231554C8'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='28' font-weight='700' fill='white' text-anchor='middle'%3EAS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: floating icon rail on the left, full-height hero over a live neural-network canvas, then alternating white / tinted sections */
+:root{
+  --bg:#FFFFFF; --bg-alt:#F4F7FC; --ink:#202B3C; --text:#3E4858; --muted:#6C7686; --line:#E2E7EF;
+  --accent:#1554C8; --accent-ink:#FFFFFF; --accent-soft:#E7EEFB; --node:#A3AEC0;
+  --thumb-1:#0F2557; --thumb-2:#1D5BD6; --thumb-3:#0A1838; --thumb-ink:#FFFFFF; --hl:#FFB547; --danger:#C93535;
+  --f-head:"Poppins", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Nunito Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C111D; --bg-alt:#111828; --ink:#EEF2F8; --text:#C8D0DD; --muted:#8C97AA; --line:#222D43;
+    --accent:#6C9EFF; --accent-ink:#0C111D; --accent-soft:#16233F; --node:#33425E;
+    --thumb-1:#0A1733; --thumb-2:#1D4CB0; --thumb-3:#070F24; --danger:#FF7A7A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C111D; --bg-alt:#111828; --ink:#EEF2F8; --text:#C8D0DD; --muted:#8C97AA; --line:#222D43;
+  --accent:#6C9EFF; --accent-ink:#0C111D; --accent-soft:#16233F; --node:#33425E;
+  --thumb-1:#0A1733; --thumb-2:#1D4CB0; --thumb-3:#070F24; --danger:#FF7A7A; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg); color:var(--text); font-family:var(--f-body); font-size:1rem; line-height:1.65}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline; text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px}
+h1,h2,h3,h4{font-family:var(--f-head); color:var(--ink); margin:0; text-wrap:balance}
+svg{display:block}
+
+.container{
+  max-width:72rem; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width:1000px){
+  .container{padding-left:max(120px, env(safe-area-inset-left, 0px)); padding-right:max(40px, env(safe-area-inset-right, 0px))}
+}
+
+/* side nav */
+.rail{position:fixed; z-index:20; left:calc(18px + env(safe-area-inset-left, 0px)); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:.6rem}
+.rail a{
+  display:flex; align-items:center; gap:.6rem; height:2.9rem; min-width:2.9rem; padding:0 .95rem;
+  border-radius:999px; background:var(--bg-alt); color:var(--muted); border:1px solid var(--line);
+  font-family:var(--f-head); font-size:.875rem; font-weight:500; text-decoration:none;
+  transition:background .25s, color .25s, max-width .3s; overflow:hidden; max-width:2.9rem; white-space:nowrap;
+}
+.rail a svg{flex:none; width:1.05rem; height:1.05rem}
+.rail a span{opacity:0; transition:opacity .2s}
+.rail a:hover, .rail a.active{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.rail a:hover{max-width:12rem}
+.rail a:hover span{opacity:1}
+@media (max-width:999px){
+  .rail{
+    top:auto; bottom:0; left:0; right:0; transform:none; flex-direction:row; justify-content:space-around;
+    background:var(--bg); border-top:1px solid var(--line); gap:0;
+    padding:.45rem max(8px, env(safe-area-inset-right, 0px)) calc(.45rem + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+  }
+  .rail a{background:transparent; border:0; padding:0; justify-content:center; height:2.6rem; min-width:2.6rem; max-width:2.6rem}
+  .rail a:hover{max-width:2.6rem}
+  .rail a span{display:none}
+  body{padding-bottom:calc(3.6rem + env(safe-area-inset-bottom, 0px))}
+}
+
+/* hero */
+.hero{position:relative; min-height:min(100vh, 56rem); display:flex; align-items:center; overflow:hidden; background:var(--bg)}
+#net{position:absolute; inset:0; width:100%; height:100%}
+.hero::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, var(--bg) 18%, transparent 75%); opacity:.85; pointer-events:none}
+.hero .container{position:relative; z-index:1; width:100%; padding-block:6rem}
+.hello{font-family:var(--f-head); font-size:1rem; font-weight:500; color:var(--accent); letter-spacing:.04em; margin:0 0 .75rem}
+.hero h1{font-size:clamp(2.6rem, 7vw, 4.4rem); font-weight:700; line-height:1.08; letter-spacing:-.02em}
+.typed{font-family:var(--f-head); font-size:clamp(1.25rem, 3vw, 1.75rem); color:var(--text); margin:1rem 0 0; min-height:1.5em}
+.typed b{font-weight:500; color:var(--accent); border-right:2px solid var(--accent); padding-right:3px}
+.socials{display:flex; gap:.6rem; margin-top:2rem; flex-wrap:wrap}
+.socials a{width:2.6rem; height:2.6rem; display:grid; place-items:center; border-radius:50%; color:var(--ink); border:1px solid var(--line); background:var(--bg)}
+.socials a:hover{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); text-decoration:none}
+.socials svg{width:1.05rem; height:1.05rem}
+.hero-cta{display:flex; flex-wrap:wrap; gap:.75rem; margin-top:2rem}
+.btn{display:inline-flex; align-items:center; gap:.5rem; font-family:var(--f-head); font-weight:500; font-size:.9375rem; padding:.75rem 1.4rem; border-radius:999px; border:2px solid var(--accent); cursor:pointer}
+.btn.primary{background:var(--accent); color:var(--accent-ink)}
+.btn.ghost{background:transparent; color:var(--accent)}
+.btn:hover{text-decoration:none; filter:brightness(1.07)}
+
+/* sections */
+.section{padding-block:clamp(3.5rem, 8vw, 5.5rem)}
+.section.alt{background:var(--bg-alt)}
+.sec-title{margin-bottom:2.5rem}
+.sec-title h2{font-size:clamp(1.75rem, 3.5vw, 2.1rem); font-weight:700; position:relative; padding-bottom:.9rem; display:inline-block}
+.sec-title h2::before{content:""; position:absolute; left:0; bottom:0; width:7rem; height:1px; background:var(--line)}
+.sec-title h2::after{content:""; position:absolute; left:0; bottom:-1px; width:2.5rem; height:3px; background:var(--accent)}
+.sec-title p{margin:1rem 0 0; max-width:44rem}
+
+/* about */
+.about{display:grid; grid-template-columns:minmax(0,1fr); gap:2.5rem; align-items:start}
+@media (min-width:860px){ .about{grid-template-columns:16rem minmax(0,1fr); gap:3rem} }
+.photo{position:relative; width:100%; max-width:16rem}
+.photo img{width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; object-position:50% 22%; border-radius:12px; display:block; max-width:100%; box-shadow:0 12px 28px -18px rgba(15,37,87,.5)}
+.photo-wrap{position:relative}
+.about h3{font-size:1.6rem; font-weight:700; color:var(--accent)}
+.about .intro{font-style:italic; margin:.75rem 0 1.5rem}
+.info{display:grid; grid-template-columns:minmax(0,1fr); gap:.7rem 2rem; list-style:none; margin:0 0 1.5rem; padding:0}
+@media (min-width:600px){ .info{grid-template-columns:repeat(2, minmax(0,1fr))} }
+.info li{display:flex; gap:.5rem; align-items:baseline; min-width:0}
+.info li::before{content:"›"; color:var(--accent); font-weight:700}
+.info strong{color:var(--ink); font-family:var(--f-head); font-weight:600; font-size:.9375rem; white-space:nowrap}
+.info span{overflow-wrap:anywhere}
+
+/* resume */
+.resume{display:grid; grid-template-columns:minmax(0,1fr); gap:1rem 3rem}
+@media (min-width:860px){ .resume{grid-template-columns:repeat(2, minmax(0,1fr))} }
+.resume h3.col{font-size:1.4rem; font-weight:700; margin:1.5rem 0 1.25rem}
+.resume > div > h3.col:first-child{margin-top:0}
+.item{position:relative; padding:0 0 1.75rem 1.6rem; border-left:2px solid var(--accent)}
+.item::before{content:""; position:absolute; left:-.55rem; top:.15rem; width:.9rem; height:.9rem; border-radius:50%; background:var(--bg-alt); border:2px solid var(--accent)}
+.section:not(.alt) .item::before{background:var(--bg)}
+.item h4{font-size:1.0625rem; font-weight:600; text-transform:uppercase; letter-spacing:.01em; color:var(--ink); line-height:1.35}
+.item .date{display:inline-block; margin:.6rem 0 .5rem; font-family:var(--f-head); font-size:.8125rem; font-weight:600; background:var(--accent-soft); color:var(--accent); padding:.2rem .75rem; border-radius:4px}
+.item .where{font-style:italic; margin:0 0 .5rem}
+.item ul{margin:.25rem 0 0; padding-left:1.1rem}
+.item li{margin:.3rem 0}
+.item p{margin:0}
+
+.cert-title{color:inherit}
+.cert-title:hover{color:var(--accent)}
+.badge{display:inline-flex; align-items:center; gap:.7rem; margin-top:.25rem; padding:.55rem .9rem .55rem .55rem; border:1px solid var(--line); border-radius:12px; background:var(--bg); color:var(--ink); max-width:100%; transition:border-color .2s, box-shadow .2s}
+.badge:hover{text-decoration:none; border-color:var(--accent); box-shadow:0 8px 20px -14px rgba(21,84,200,.6)}
+.badge .seal{flex:none; width:2.4rem; height:2.4rem; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:grid; place-items:center}
+.badge .seal svg{width:1.25rem; height:1.25rem}
+.badge-text{display:flex; flex-direction:column; line-height:1.25; min-width:0}
+.badge-text b{font-family:var(--f-head); font-size:.875rem; font-weight:600}
+.badge-text small{font-size:.75rem; color:var(--muted); overflow-wrap:anywhere}
+.badge .arrow{color:var(--accent); font-weight:700; margin-left:.25rem}
+.course-links{list-style:none; padding:0 !important; margin:.9rem 0 0 !important; display:grid; gap:.35rem}
+.course-links li{margin:0 !important}
+.course-links a{display:flex; justify-content:space-between; align-items:baseline; gap:1rem; padding:.45rem .75rem; border-radius:8px; background:var(--accent-soft); color:var(--ink); font-size:.9rem}
+.course-links a:hover{text-decoration:none; color:var(--accent)}
+.course-links small{flex:none; color:var(--muted); font-size:.75rem}
+
+/* skills */
+.skills{display:grid; grid-template-columns:minmax(0,1fr); gap:1.25rem}
+@media (min-width:700px){ .skills{grid-template-columns:repeat(2, minmax(0,1fr))} }
+@media (min-width:1100px){ .skills{grid-template-columns:repeat(3, minmax(0,1fr))} }
+.skill{background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:1.4rem}
+.skill-head{display:flex; align-items:center; gap:.75rem; margin-bottom:1rem}
+.skill-head .ic{width:2.4rem; height:2.4rem; border-radius:10px; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; flex:none}
+.skill-head .ic svg{width:1.15rem; height:1.15rem}
+.skill h3{font-size:1.05rem; font-weight:600}
+.chips{display:flex; flex-wrap:wrap; gap:.45rem; list-style:none; margin:0; padding:0}
+.chips li{font-size:.8125rem; font-weight:600; padding:.25rem .7rem; border-radius:999px; background:var(--bg-alt); border:1px solid var(--line); color:var(--text)}
+.chips li.core{background:var(--accent-soft); color:var(--accent); border-color:transparent}
+.lang-list{list-style:none; margin:0; padding:0; display:grid; gap:.6rem}
+.lang-list li{display:flex; justify-content:space-between; gap:1rem; border-bottom:1px dashed var(--line); padding-bottom:.5rem}
+.lang-list li:last-child{border-bottom:0}
+.lang-list span{color:var(--muted); font-size:.875rem; text-align:right}
+
+/* portfolio */
+.filters{display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2rem}
+.filters button{font:500 .875rem var(--f-head); padding:.5rem 1.1rem; border-radius:999px; border:1px solid var(--line); background:var(--bg); color:var(--text); cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.grid{display:grid; grid-template-columns:minmax(0,1fr); gap:1.5rem}
+@media (min-width:700px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr))} }
+@media (min-width:1100px){ .grid{grid-template-columns:repeat(3, minmax(0,1fr))} .card.wide{grid-column:span 2} }
+.card{background:var(--bg); border:1px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; transition:transform .2s, box-shadow .2s}
+.card:hover{transform:translateY(-4px); box-shadow:0 14px 30px -18px rgba(15,37,87,.45)}
+.thumb{position:relative; height:11rem; overflow:hidden; color:var(--thumb-ink);
+  background:radial-gradient(120% 100% at 88% 0%, var(--thumb-2), transparent 62%), linear-gradient(160deg, var(--thumb-1), var(--thumb-3))}
+.thumb svg{position:absolute; inset:0; width:100%; height:100%}
+.thumb .t-xs{font:500 11px var(--f-head)}
+.thumb .t-sm{font:600 13px var(--f-head)}
+.thumb .t-b{font-weight:700}
+.card-body .cat{font:600 .6875rem var(--f-head); letter-spacing:.1em; text-transform:uppercase; color:var(--accent)}
+.result{font-size:.875rem; color:var(--muted)}
+.result b{color:var(--ink); font-family:var(--f-head); font-weight:700; font-size:1rem; margin-right:.2rem}
+.card-body{padding:1.15rem 1.25rem 1.4rem; display:flex; flex-direction:column; gap:.5rem; flex:1}
+.card h3{font-size:1.0625rem; font-weight:600; line-height:1.35}
+.card p{margin:0; font-size:.9375rem}
+.card .stack{font-size:.8125rem; color:var(--muted)}
+.card .more{margin-top:auto; font-family:var(--f-head); font-weight:500; font-size:.875rem; display:flex; gap:1rem; flex-wrap:wrap}
+.see-all{margin-top:2rem; font-size:.9375rem}
+
+/* contact */
+.contact-layout{display:grid; grid-template-columns:minmax(0,1fr); gap:2rem; align-items:start}
+@media (min-width:900px){ .contact-layout{grid-template-columns:minmax(0,2fr) minmax(0,3fr); gap:2.5rem} }
+.contact{display:grid; grid-template-columns:minmax(0,1fr); gap:.9rem}
+.c-card{background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:1.1rem 1.25rem; display:grid; grid-template-columns:2.75rem minmax(0,1fr); column-gap:1rem; row-gap:.15rem; align-items:center; min-width:0}
+.c-card > *:not(.ic){grid-column:2}
+.c-card .ic{grid-row:1 / span 4; align-self:start; width:2.75rem; height:2.75rem; border-radius:50%; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center}
+.c-card .ic svg{width:1.2rem; height:1.2rem}
+.c-card h3{font-size:1rem; font-weight:600}
+.c-card p{margin:0; overflow-wrap:anywhere}
+.c-card button{align-self:flex-start; margin-top:.4rem; font:500 .8125rem var(--f-head); color:var(--accent); background:var(--accent-soft); border:0; border-radius:999px; padding:.35rem .9rem; cursor:pointer}
+.status{font-size:.8125rem; color:var(--muted); min-height:1.2em; margin:0}
+.cform{background:var(--bg); border:1px solid var(--line); border-radius:16px; padding:clamp(1.25rem, 3vw, 2rem); display:grid; gap:1.1rem; min-width:0}
+.row2{display:grid; grid-template-columns:minmax(0,1fr); gap:1.1rem}
+@media (min-width:600px){ .row2{grid-template-columns:repeat(2, minmax(0,1fr))} .field.half{max-width:calc(50% - .55rem)} }
+.field{display:grid; gap:.45rem; min-width:0}
+.field label{font:600 .6875rem var(--f-head); letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.field input, .field textarea{width:100%; font:400 1rem var(--f-body); color:var(--ink); background:var(--bg-alt); border:1px solid var(--line); border-radius:10px; padding:.85rem 1rem; transition:border-color .2s, box-shadow .2s}
+.field textarea{min-height:8.5rem; resize:vertical; line-height:1.55}
+.field input::placeholder, .field textarea::placeholder{color:var(--muted); opacity:.85}
+.field input:focus, .field textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+.field [aria-invalid="true"]{border-color:var(--danger)}
+.form-error{margin:0; font-size:.875rem; color:var(--danger); min-height:1.2em}
+.form-error:empty{display:none}
+.send{justify-self:start; display:inline-flex; align-items:center; gap:.6rem; font:600 .8125rem var(--f-head); letter-spacing:.1em; text-transform:uppercase; color:var(--bg); background:var(--ink); border:0; border-radius:999px; padding:1rem 1.6rem; cursor:pointer; transition:transform .15s, background .2s}
+.send:hover{background:var(--accent); color:var(--accent-ink)}
+.send:active{transform:translateY(1px)}
+.sent{border:1px solid var(--accent); background:var(--accent-soft); border-radius:12px; padding:1.1rem 1.25rem; display:grid; gap:.6rem}
+.sent h3{font-size:1.05rem; font-weight:600}
+.sent p{margin:0; font-size:.9375rem}
+.sent .actions{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.2rem}
+.sent .actions a, .sent .actions button{font:600 .8125rem var(--f-head); border-radius:999px; padding:.6rem 1.1rem; cursor:pointer; border:1px solid var(--accent)}
+.sent .actions a{background:var(--accent); color:var(--accent-ink)}
+.sent .actions a:hover{text-decoration:none; filter:brightness(1.08)}
+.sent .actions button{background:var(--bg); color:var(--accent)}
+footer{border-top:1px solid var(--line); font-size:.875rem; color:var(--muted)}
+footer .container{display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem 1rem; padding-block:1.5rem}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .card, .rail a, .rail a span{transition:none}
+  .card:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<nav class="rail" aria-label="Sections">
+  <a href="#hero" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+  <a href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>About</span></a>
+  <a href="#resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Resume</span></a>
+  <a href="#skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Skills</span></a>
+  <a href="#portfolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Portfolio</span></a>
+  <a href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span>Contact</span></a>
+</nav>
+
+<main>
+  <section class="hero" id="hero">
+    <canvas id="net" aria-hidden="true"></canvas>
+    <div class="container">
+      <p class="hello">Hello, I'm</p>
+      <h1>Alireza Shahidiani</h1>
+      <p class="typed" aria-live="off">I'm <b id="typed">an AI Engineer</b></p>
+      <div class="hero-cta">
+        <a class="btn primary" href="#portfolio">View my projects</a>
+        <a class="btn ghost" href="#contact">Get in touch</a>
+      </div>
+      <div class="socials">
+        <a href="#contact" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a>
+        <a href="https://github.com/Shervinrtd" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        <a href="https://www.linkedin.com/in/alireza-shahidiani/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.064 2.064 0 1 1 0-4.128 2.064 2.064 0 0 1 0 4.128zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="container">
+      <div class="sec-title">
+        <h2>About</h2>
+        <p>I'm an M.Sc. student in Artificial Intelligence at the University of Bologna. I work on large language models, retrieval-augmented generation and the question of whether AI systems can be trusted with real data and real code.</p>
+      </div>
+      <div class="about">
+        <div class="photo-wrap">
+          <div class="photo"><img src="headshot.webp" alt="Portrait of Alireza Shahidiani" width="1086" height="1448"></div>
+        </div>
+        <div>
+          <h3>AI Engineer &amp; NLP Researcher</h3>
+          <p class="intro">Turning data into intelligence with transformers, and testing it before anyone else has to.</p>
+          <ul class="info">
+            <li><strong>City:</strong><span>Bologna, Italy</span></li>
+            <li><strong>Degree:</strong><span>M.Sc. Artificial Intelligence (in progress)</span></li>
+            <li><strong>Email:</strong><span>alirezashahidiani@gmail.com</span></li>
+            <li><strong>Background:</strong><span>B.Sc. Computer Engineering</span></li>
+            <li><strong>GitHub:</strong><span><a href="https://github.com/Shervinrtd" target="_blank" rel="noopener">Shervinrtd</a></span></li>
+            <li><strong>Languages:</strong><span>Persian, English, Italian</span></li>
+          </ul>
+          <p>Most recently I was a research intern at INFN CNAF, where I built four security benchmarks from primary sources and measured how well LLMs detect vulnerabilities, malware, leaked secrets and risky dependencies in open-source code, compared with established tools.</p>
+          <p>Before that, my projects ranged from a neuro-symbolic RAG system that reduces hallucinations in medical question answering, to distributed Spark pipelines, density-based anomaly detection and computer vision. I also have a backend background in Laravel and REST APIs, so I like seeing models all the way into working systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="resume">
+    <div class="container">
+      <div class="sec-title">
+        <h2>Resume</h2>
+        <p>Education, research and certifications.</p>
+      </div>
+      <div class="resume">
+        <div>
+          <h3 class="col">Education</h3>
+          <div class="item">
+            <h4>Master of Science in Artificial Intelligence</h4>
+            <span class="date">2024 – Present</span>
+            <p class="where">Alma Mater Studiorum – Università di Bologna, Bologna, Italy</p>
+            <p>Coursework includes NLP, image processing and computer vision, combinatorial decision making and optimisation, AI in industry, and big data analytics.</p>
+          </div>
+          <div class="item">
+            <h4>Bachelor of Science in Computer Engineering</h4>
+            <span class="date">Graduated 2023</span>
+            <p class="where">Shahrood University of Technology, Shahrood, Iran</p>
+          </div>
+
+          <h3 class="col">Certifications</h3>
+          <div class="item">
+            <h4><a class="cert-title" href="https://www.coursera.org/account/accomplishments/specialization/VGY795THDDS3" target="_blank" rel="noopener">Machine Learning Specialization</a></h4>
+            <span class="date">Sept. 2025</span>
+            <p class="where">DeepLearning.AI &amp; Stanford Online · Coursera</p>
+            <a class="badge" href="https://www.coursera.org/account/accomplishments/specialization/VGY795THDDS3" target="_blank" rel="noopener">
+              <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m9.5 9 1.8 1.8L14.8 7.3M8.5 14l-1.5 7 5-3 5 3-1.5-7"/></svg></span>
+              <span class="badge-text"><b>Verified certificate</b><small>ID VGY795THDDS3</small></span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <div class="item">
+            <h4><a class="cert-title" href="https://www.coursera.org/account/accomplishments/specialization/ZR1NV0BP1SP2" target="_blank" rel="noopener">Deep Learning Specialization</a></h4>
+            <span class="date">Mar. 2025</span>
+            <p class="where">DeepLearning.AI · Coursera · 5 courses</p>
+            <a class="badge" href="https://www.coursera.org/account/accomplishments/specialization/ZR1NV0BP1SP2" target="_blank" rel="noopener">
+              <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m9.5 9 1.8 1.8L14.8 7.3M8.5 14l-1.5 7 5-3 5 3-1.5-7"/></svg></span>
+              <span class="badge-text"><b>Verified certificate</b><small>ID ZR1NV0BP1SP2</small></span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+            <ul class="course-links">
+              <li><a href="https://www.coursera.org/account/accomplishments/verify/8JKWCZ7EYDVQ" target="_blank" rel="noopener"><span>Neural Networks and Deep Learning</span><small>Nov. 2021 ↗</small></a></li>
+              <li><a href="https://www.coursera.org/account/accomplishments/verify/F23AU8TE5LBS" target="_blank" rel="noopener"><span>Improving Deep Neural Networks</span><small>Sept. 2022 ↗</small></a></li>
+              <li><a href="https://www.coursera.org/account/accomplishments/verify/BT2BWYUFY83X" target="_blank" rel="noopener"><span>Structuring Machine Learning Projects</span><small>Sept. 2022 ↗</small></a></li>
+              <li><a href="https://www.coursera.org/account/accomplishments/verify/RDS9D7CMW7LP" target="_blank" rel="noopener"><span>Convolutional Neural Networks</span><small>Sept. 2022 ↗</small></a></li>
+              <li><a href="https://www.coursera.org/account/accomplishments/specialization/ZR1NV0BP1SP2" target="_blank" rel="noopener"><span>Sequence Models</span><small>2025 ↗</small></a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="col">Research Experience</h3>
+          <div class="item">
+            <h4>Research Intern, LLM Security Analysis</h4>
+            <span class="date">Jul. 2026 – Sept. 2026</span>
+            <p class="where">INFN CNAF, Bologna, Italy</p>
+            <ul>
+              <li>Evaluated large language models as semantic security analysers for open-source repositories across four threat categories.</li>
+              <li>Built a vulnerability corpus from primary sources (NVD, OSV, GitHub fix commits): 35,952 functions in Java, C/C++, Python and JavaScript, labelled with 196 CWE classes.</li>
+              <li>Created benchmarks for malware (300 packages, 6 techniques), secrets (300 files) and dependencies (300 manifests in 3 ecosystems), each compared with GuardDog, Gitleaks or OSV.</li>
+              <li>Developed a repository-level auditor validated on 56 reconstructed cases across 48 repositories, supporting 7 LLM providers and 6 prompting strategies.</li>
+            </ul>
+          </div>
+
+          <h3 class="col">Academic Research Projects</h3>
+          <div class="item">
+            <h4>Neuro-Symbolic RAG for Medical QA</h4>
+            <span class="date">University of Bologna</span>
+            <ul>
+              <li>Combined an LLM-extracted knowledge graph with FAISS vector search and a cross-encoder judge to reduce hallucinations on PubMedQA.</li>
+            </ul>
+          </div>
+          <div class="item">
+            <h4>Density-Based Anomaly Detection</h4>
+            <span class="date">AI in Industry, University of Bologna</span>
+            <ul>
+              <li>Compared five KDE and neural density models on real AWS server CPU data, with alarm thresholds tuned on a cost model.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="sec-title">
+        <h2>Skills</h2>
+        <p>Highlighted tools are the ones I use most.</p>
+      </div>
+      <div class="skills">
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18 3 12l6-6M15 6l6 6-6 6"/></svg></span><h3>Programming Languages</h3></div>
+          <ul class="chips"><li class="core">Python</li><li>C++</li><li>Java</li><li>SQL</li><li>PHP</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg></span><h3>LLMs &amp; NLP</h3></div>
+          <ul class="chips"><li class="core">Transformers</li><li class="core">RAG</li><li>Prompt engineering</li><li>Fine-tuning</li><li>Quantization</li><li>FAISS</li><li>Knowledge graphs</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="12" r="2"/><path d="m7 6 10 5M7 18l10-5"/></svg></span><h3>Deep Learning</h3></div>
+          <ul class="chips"><li class="core">PyTorch</li><li>TensorFlow</li><li>Keras</li><li>scikit-learn</li><li>OpenCV</li><li>Grad-CAM</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6z"/></svg></span><h3>AI Security</h3></div>
+          <ul class="chips"><li class="core">LLM evaluation</li><li>tree-sitter</li><li>NVD / OSV</li><li>Gitleaks</li><li>GuardDog</li><li>CWE taxonomy</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><h3>Data &amp; Optimisation</h3></div>
+          <ul class="chips"><li class="core">PySpark</li><li>Hadoop / HDFS</li><li>pandas</li><li>MiniZinc</li><li>Z3</li><li>PuLP</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01"/></svg></span><h3>Backend &amp; Tools</h3></div>
+          <ul class="chips"><li class="core">Laravel</li><li>REST APIs</li><li>Microservices</li><li>Docker</li><li>Git</li><li>LaTeX</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg></span><h3>Languages</h3></div>
+          <ul class="lang-list">
+            <li>Persian<span>Native</span></li>
+            <li>English<span>Professional · TOEFL 98/120</span></li>
+            <li>Italian<span>Limited working</span></li>
+          </ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c3 0 6 1.9 6 5.5"/></svg></span><h3>Other Skills</h3></div>
+          <ul class="chips"><li>Research design</li><li>Technical writing</li><li>Team work</li><li>Presentation</li></ul>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><h3>Evaluation</h3></div>
+          <ul class="chips"><li>Macro F1</li><li>Confusion matrices</li><li>Ablation studies</li><li>Cost-sensitive metrics</li><li>Baselines</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="portfolio">
+    <div class="container">
+      <div class="sec-title">
+        <h2>Portfolio</h2>
+        <p>Each card leads with the result the project was judged on. All code is on <a href="https://github.com/Shervinrtd" target="_blank" rel="noopener">GitHub</a>.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button type="button" id="f-all" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" id="f-nlp" data-filter="nlp" aria-pressed="false">LLMs &amp; NLP</button>
+        <button type="button" id="f-vision" data-filter="vision" aria-pressed="false">Computer Vision</button>
+        <button type="button" id="f-data" data-filter="data" aria-pressed="false">Data &amp; Optimisation</button>
+      </div>
+
+      <div class="grid" id="grid">
+        <article class="card wide" data-cat="nlp">
+          <div class="thumb">
+            <svg viewBox="0 0 700 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect x="40" y="26" width="330" height="150" rx="8" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.22)"/>
+              <circle cx="56" cy="40" r="3.5" fill="rgba(255,255,255,.35)"/><circle cx="68" cy="40" r="3.5" fill="rgba(255,255,255,.35)"/><circle cx="80" cy="40" r="3.5" fill="rgba(255,255,255,.35)"/>
+              <text x="300" y="44" class="t-xs" fill="rgba(255,255,255,.5)">upload.py</text>
+              <g fill="rgba(255,255,255,.35)" class="t-xs"><text x="52" y="68">12</text><text x="52" y="86">13</text><text x="52" y="104">14</text><text x="52" y="122">15</text><text x="52" y="140">16</text><text x="52" y="158">17</text></g>
+              <rect x="44" y="94" width="322" height="16" fill="var(--hl)" opacity=".18"/>
+              <rect x="44" y="94" width="3" height="16" fill="var(--hl)"/>
+              <g fill="rgba(255,255,255,.55)">
+                <rect x="76" y="62" width="70" height="7" rx="3.5"/><rect x="152" y="62" width="110" height="7" rx="3.5" fill="#8FB4FF"/>
+                <rect x="92" y="80" width="54" height="7" rx="3.5"/><rect x="152" y="80" width="64" height="7" rx="3.5"/>
+                <rect x="92" y="98" width="90" height="7" rx="3.5" fill="var(--hl)"/><rect x="188" y="98" width="120" height="7" rx="3.5" fill="var(--hl)" opacity=".7"/>
+                <rect x="92" y="116" width="40" height="7" rx="3.5" fill="#8FB4FF"/><rect x="138" y="116" width="96" height="7" rx="3.5"/>
+                <rect x="108" y="134" width="130" height="7" rx="3.5"/>
+                <rect x="76" y="152" width="60" height="7" rx="3.5"/>
+              </g>
+              <g transform="translate(316 86)"><rect width="66" height="22" rx="11" fill="var(--hl)"/><text x="33" y="15" text-anchor="middle" class="t-xs t-b" fill="#1A1300">CWE-22</text></g>
+              <path d="M404 100h44" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-dasharray="4 5"/>
+              <path d="M448 100l-8-5v10z" fill="rgba(255,255,255,.4)"/>
+              <path d="M500 50l40-14 40 14v40c0 30-18 50-40 58-22-8-40-28-40-58z" fill="rgba(255,255,255,.08)" stroke="#FFFFFF" stroke-width="2.5"/>
+              <path d="M522 96l13 13 25-27" fill="none" stroke="var(--hl)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <g class="t-xs" fill="#FFFFFF">
+                <rect x="604" y="40" width="78" height="22" rx="11" fill="rgba(255,255,255,.12)"/><text x="643" y="55" text-anchor="middle">vulns</text>
+                <rect x="604" y="70" width="78" height="22" rx="11" fill="rgba(255,255,255,.12)"/><text x="643" y="85" text-anchor="middle">malware</text>
+                <rect x="604" y="100" width="78" height="22" rx="11" fill="rgba(255,255,255,.12)"/><text x="643" y="115" text-anchor="middle">secrets</text>
+                <rect x="604" y="130" width="78" height="22" rx="11" fill="rgba(255,255,255,.12)"/><text x="643" y="145" text-anchor="middle">deps</text>
+              </g>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">Research · INFN CNAF</span>
+            <h3>LLM-Based Security Analysis of Open-Source Repositories</h3>
+            <p class="result"><b>35,952</b> functions labelled across 196 CWEs</p>
+            <p>Four benchmarks (vulnerabilities, malware, secrets, dependencies) built from NVD, OSV and GitHub fix commits, with LLMs compared against Gitleaks, GuardDog and OSV, plus a repository-level auditor.</p>
+            <span class="stack">Python · tree-sitter · 7 LLM providers · 6 prompting strategies</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/llm-security-analysis" target="_blank" rel="noopener">View code →</a><a href="https://github.com/Shervinrtd/llm-security-analysis/tree/main/output/pdf" target="_blank" rel="noopener">Read report →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="nlp">
+          <div class="thumb">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.35)">
+                <rect x="34" y="52" width="56" height="72" rx="5"/><rect x="42" y="62" width="56" height="72" rx="5"/><rect x="50" y="72" width="56" height="72" rx="5" fill="rgba(255,255,255,.16)"/>
+              </g>
+              <g fill="rgba(255,255,255,.5)"><rect x="58" y="84" width="38" height="4" rx="2"/><rect x="58" y="94" width="30" height="4" rx="2"/><rect x="58" y="104" width="40" height="4" rx="2"/><rect x="58" y="114" width="24" height="4" rx="2"/></g>
+              <g stroke="rgba(255,255,255,.4)" stroke-width="1.6">
+                <path d="M160 62 210 46M160 62 186 112M210 46 252 84M186 112 252 84M186 112 222 150M252 84 222 150M160 62 140 128M140 128 186 112"/>
+              </g>
+              <path d="M140 128 186 112 252 84" stroke="var(--hl)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <g fill="#FFFFFF"><circle cx="160" cy="62" r="7"/><circle cx="210" cy="46" r="6"/><circle cx="222" cy="150" r="6"/></g>
+              <g fill="var(--hl)"><circle cx="140" cy="128" r="8"/><circle cx="186" cy="112" r="9"/><circle cx="252" cy="84" r="8"/></g>
+              <path d="M112 106h18" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-dasharray="3 4"/>
+              <path d="M266 92h26" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-dasharray="3 4"/>
+              <path d="M300 70h70a10 10 0 0 1 10 10v36a10 10 0 0 1-10 10h-46l-14 14v-14h-10a10 10 0 0 1-10-10V80a10 10 0 0 1 10-10z" fill="#FFFFFF"/>
+              <g fill="#1B3F8F"><rect x="304" y="84" width="58" height="5" rx="2.5"/><rect x="304" y="95" width="44" height="5" rx="2.5"/><rect x="304" y="106" width="52" height="5" rx="2.5"/></g>
+              <circle cx="372" cy="70" r="11" fill="var(--hl)"/><path d="M366 70l4 4 7-8" stroke="#1A1300" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">LLMs · RAG</span>
+            <h3>Autonomous Neuro-Symbolic RAG System for Medical QA</h3>
+            <p class="result"><b>3</b> RAG architectures compared</p>
+            <p>Graph RAG with Gemma-2b triplet extraction and a cross-encoder judge, falling back to FAISS retrieval when confidence is low.</p>
+            <span class="stack">Transformers · FAISS · NetworkX</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/Knowledge-Injection" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="nlp">
+          <div class="thumb">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g>
+                <rect x="40" y="30" width="190" height="34" rx="12" fill="rgba(255,255,255,.12)"/>
+                <g fill="rgba(255,255,255,.5)"><rect x="56" y="44" width="60" height="6" rx="3"/><rect x="122" y="44" width="84" height="6" rx="3"/></g>
+                <rect x="244" y="36" width="96" height="22" rx="11" fill="rgba(255,255,255,.14)"/><text x="292" y="51" text-anchor="middle" class="t-xs" fill="#FFFFFF">not sexist</text>
+              </g>
+              <g>
+                <rect x="40" y="78" width="210" height="34" rx="12" fill="rgba(255,255,255,.12)" stroke="var(--hl)" stroke-width="1.5"/>
+                <g fill="rgba(255,255,255,.5)"><rect x="56" y="92" width="44" height="6" rx="3"/><rect x="106" y="92" width="58" height="6" rx="3" fill="var(--hl)"/><rect x="170" y="92" width="60" height="6" rx="3"/></g>
+                <rect x="264" y="84" width="96" height="22" rx="11" fill="var(--hl)"/><text x="312" y="99" text-anchor="middle" class="t-xs t-b" fill="#1A1300">sexist</text>
+              </g>
+              <g>
+                <rect x="40" y="126" width="170" height="34" rx="12" fill="rgba(255,255,255,.12)"/>
+                <g fill="rgba(255,255,255,.5)"><rect x="56" y="140" width="70" height="6" rx="3"/><rect x="132" y="140" width="56" height="6" rx="3"/></g>
+                <rect x="224" y="132" width="96" height="22" rx="11" fill="rgba(255,255,255,.14)"/><text x="272" y="147" text-anchor="middle" class="t-xs" fill="#FFFFFF">not sexist</text>
+              </g>
+              <g class="t-xs" fill="rgba(255,255,255,.7)">
+                <text x="40" y="186">BiLSTM</text><rect x="92" y="178" width="110" height="9" rx="4.5" fill="rgba(255,255,255,.3)"/>
+                <text x="214" y="186">RoBERTa</text><rect x="272" y="178" width="88" height="9" rx="4.5" fill="var(--hl)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">NLP · Transformers</span>
+            <h3>Sexism Detection with RNNs and Transformers</h3>
+            <p class="result"><b>+9 pp</b> macro F1 for RoBERTa over BiLSTM</p>
+            <p>Fine-tuned RoBERTa against a GloVe BiLSTM on EXIST 2023, with annotator aggregation and error analysis.</p>
+            <span class="stack">PyTorch · RoBERTa · NLTK</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/Categorize-sexist-messages" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="data">
+          <div class="thumb">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g stroke="rgba(255,255,255,.1)"><path d="M30 40h340M30 80h340M30 120h340M30 160h340"/></g>
+              <g>
+                <rect x="44" y="104" width="16" height="56" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="66" y="92" width="16" height="68" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="88" y="112" width="16" height="48" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="110" y="84" width="16" height="76" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="132" y="40" width="16" height="120" rx="2" fill="var(--hl)"/>
+                <rect x="154" y="98" width="16" height="62" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="176" y="118" width="16" height="42" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="198" y="88" width="16" height="72" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="220" y="102" width="16" height="58" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="242" y="30" width="16" height="130" rx="2" fill="var(--hl)"/>
+                <rect x="264" y="94" width="16" height="66" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="286" y="110" width="16" height="50" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="308" y="80" width="16" height="80" rx="2" fill="rgba(255,255,255,.35)"/>
+                <rect x="330" y="100" width="16" height="60" rx="2" fill="rgba(255,255,255,.35)"/>
+              </g>
+              <path d="M30 62h340" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="6 5"/>
+              <text x="368" y="55" text-anchor="end" class="t-xs" fill="#FFFFFF">99th percentile</text>
+              <path d="M30 160h340" stroke="rgba(255,255,255,.5)"/>
+              <g fill="rgba(255,255,255,.9)"><path d="M58 50a12 12 0 0 1 22-6 9 9 0 0 1 14 7 8 8 0 0 1-2 15H60a9 9 0 0 1-2-16z" opacity=".85"/></g>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">Big Data · Spark</span>
+            <h3>Predicting Extreme Air Pollution Levels Using PySpark</h3>
+            <p class="result"><b>R² 0.9986</b> best of 6 regressors</p>
+            <p>Distributed Spark ML pipeline on HDFS predicting 99th-percentile pollution across US EPA stations.</p>
+            <span class="stack">PySpark · Spark ML · Hadoop</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/Air-Quality" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="data">
+          <div class="thumb">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g stroke="rgba(255,255,255,.1)"><path d="M30 50h290M30 100h290M30 150h290"/></g>
+              <rect x="186" y="30" width="62" height="140" fill="var(--hl)" opacity=".18"/>
+              <path d="M186 30v140M248 30v140" stroke="var(--hl)" stroke-width="1.2" stroke-dasharray="3 4"/>
+              <text x="217" y="24" text-anchor="middle" class="t-xs t-b" fill="var(--hl)">anomaly</text>
+              <polyline fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"
+                points="30,128 42,118 54,110 66,114 78,126 90,134 102,130 114,118 126,108 138,106 150,116 162,128 174,132 186,120 194,72 202,58 210,66 218,54 226,62 234,50 242,64 250,118 262,128 274,120 286,108 298,106 310,118 320,128"/>
+              <path d="M320 30v140" stroke="rgba(255,255,255,.3)"/>
+              <path d="M320 40c4 0 6 30 16 50s34 14 34 26-24 6-34 26-12 28-16 28" fill="rgba(255,255,255,.12)" stroke="#8FB4FF" stroke-width="2"/>
+              <text x="372" y="182" text-anchor="end" class="t-xs" fill="rgba(255,255,255,.6)">p(x)</text>
+              <text x="30" y="186" class="t-xs" fill="rgba(255,255,255,.6)">CPU %, 5-min</text>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">Anomaly Detection</span>
+            <h3>Adaptive Density-Based Anomaly Detection for Server Monitoring</h3>
+            <p class="result"><b>5</b> density models compared</p>
+            <p>KDE and neural conditional density models on real AWS EC2 data, with thresholds set by a cost model.</p>
+            <span class="stack">Python · KDE · time series</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/CPU-Monitoring-Data" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="vision">
+          <div class="thumb thumb-xray">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <defs>
+                <radialGradient id="cam" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#FF4D2E" stop-opacity=".9"/>
+                  <stop offset=".45" stop-color="#FFB547" stop-opacity=".6"/>
+                  <stop offset="1" stop-color="#FFE27A" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <path d="M150 50c-26 6-36 40-36 76 0 26 8 44 26 44 20 0 34-14 38-32 3-18 2-56-4-74-5-12-14-16-24-14z" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+              <path d="M250 50c26 6 36 40 36 76 0 26-8 44-26 44-20 0-34-14-38-32-3-18-2-56 4-74 5-12 14-16 24-14z" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+              <path d="M200 26v160" stroke="rgba(255,255,255,.75)" stroke-width="7" stroke-linecap="round" stroke-dasharray="9 3"/>
+              <g fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2.2">
+                <path d="M196 62c-30-6-56 0-74 16M204 62c30-6 56 0 74 16"/>
+                <path d="M196 86c-30-6-58 0-78 18M204 86c30-6 58 0 78 18"/>
+                <path d="M196 110c-28-6-58 0-78 20M204 110c28-6 58 0 78 20"/>
+                <path d="M196 134c-26-4-52 2-70 20M204 134c26-4 52 2 70 20"/>
+              </g>
+              <ellipse cx="258" cy="132" rx="46" ry="38" fill="url(#cam)"/>
+              <text x="368" y="186" text-anchor="end" class="t-xs" fill="rgba(255,255,255,.7)">Grad-CAM</text>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">Medical Imaging</span>
+            <h3>Pneumonia Detection from Chest X-Ray Images</h3>
+            <p class="result"><b>0.83 F1</b> with a class-weighted CNN</p>
+            <p>Baseline, class-weighted and fine-tuned ResNet50 models, explained with Grad-CAM.</p>
+            <span class="stack">PyTorch · ResNet50 · Grad-CAM</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/Chest_Xray" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="vision">
+          <div class="thumb">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <g fill="none" stroke="#FFFFFF" stroke-width="2">
+                <circle cx="96" cy="78" r="26" fill="rgba(255,255,255,.1)"/><path d="M50 160c4-30 22-48 46-48s42 18 46 48"/>
+                <circle cx="304" cy="78" r="26" fill="rgba(255,255,255,.1)"/><path d="M258 160c4-30 22-48 46-48s42 18 46 48"/>
+              </g>
+              <path d="M130 80h140" stroke="var(--hl)" stroke-width="2.5" stroke-dasharray="6 5"/>
+              <rect x="164" y="64" width="72" height="30" rx="15" fill="var(--hl)"/>
+              <text x="200" y="84" text-anchor="middle" class="t-sm t-b" fill="#1A1300">‖f₁ − f₂‖</text>
+              <g fill="rgba(255,255,255,.55)">
+                <rect x="58" y="172" width="4" height="10"/><rect x="64" y="168" width="4" height="14"/><rect x="70" y="175" width="4" height="7"/><rect x="76" y="166" width="4" height="16"/><rect x="82" y="171" width="4" height="11"/><rect x="88" y="169" width="4" height="13"/><rect x="94" y="174" width="4" height="8"/><rect x="100" y="167" width="4" height="15"/><rect x="106" y="172" width="4" height="10"/><rect x="112" y="170" width="4" height="12"/><rect x="118" y="175" width="4" height="7"/><rect x="124" y="168" width="4" height="14"/><rect x="130" y="172" width="4" height="10"/>
+                <rect x="266" y="173" width="4" height="9"/><rect x="272" y="168" width="4" height="14"/><rect x="278" y="174" width="4" height="8"/><rect x="284" y="166" width="4" height="16"/><rect x="290" y="170" width="4" height="12"/><rect x="296" y="169" width="4" height="13"/><rect x="302" y="175" width="4" height="7"/><rect x="308" y="167" width="4" height="15"/><rect x="314" y="171" width="4" height="11"/><rect x="320" y="170" width="4" height="12"/><rect x="326" y="174" width="4" height="8"/><rect x="332" y="168" width="4" height="14"/><rect x="338" y="172" width="4" height="10"/>
+              </g>
+              <text x="200" y="182" text-anchor="middle" class="t-xs" fill="rgba(255,255,255,.65)">128-d embeddings</text>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">Face Recognition</span>
+            <h3>Face Recognition with FaceNet</h3>
+            <p class="result"><b>1 image</b> per person for one-shot enrolment</p>
+            <p>Triplet loss and 128-d embeddings for 1:1 verification and 1:K recognition.</p>
+            <span class="stack">TensorFlow · Keras</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/Face-Recognition" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="vision">
+          <div class="thumb">
+            <svg viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect x="34" y="60" width="54" height="78" rx="3" fill="#8FB4FF"/>
+              <rect x="42" y="72" width="38" height="5" rx="2.5" fill="#0F2557"/><rect x="42" y="82" width="26" height="4" rx="2" fill="#0F2557" opacity=".6"/>
+              <circle cx="61" cy="112" r="10" fill="none" stroke="#0F2557" stroke-width="2"/>
+              <text x="61" y="156" text-anchor="middle" class="t-xs" fill="rgba(255,255,255,.7)">query</text>
+              <path d="M140 158h240" stroke="rgba(255,255,255,.6)" stroke-width="3"/>
+              <g>
+                <rect x="146" y="70" width="26" height="88" fill="rgba(255,255,255,.2)"/>
+                <rect x="176" y="56" width="22" height="102" fill="rgba(255,255,255,.3)"/>
+                <rect x="202" y="78" width="30" height="80" fill="rgba(255,255,255,.18)"/>
+                <path d="M238 82l52 4-2 72-52-2z" fill="#8FB4FF"/>
+                <rect x="296" y="62" width="24" height="96" fill="rgba(255,255,255,.25)"/>
+                <rect x="324" y="74" width="28" height="84" fill="rgba(255,255,255,.18)"/>
+                <rect x="356" y="64" width="20" height="94" fill="rgba(255,255,255,.3)"/>
+              </g>
+              <path d="M234 78l60 5-3 79-60-3z" fill="none" stroke="var(--hl)" stroke-width="2.6"/>
+              <g stroke="var(--hl)" stroke-width="1.1" opacity=".85">
+                <path d="M50 74 248 92M74 84 276 96M61 112 262 124M44 128 246 146M80 130 280 146"/>
+              </g>
+              <g fill="var(--hl)">
+                <circle cx="50" cy="74" r="3"/><circle cx="74" cy="84" r="3"/><circle cx="61" cy="112" r="3"/><circle cx="44" cy="128" r="3"/><circle cx="80" cy="130" r="3"/>
+                <circle cx="248" cy="92" r="3"/><circle cx="276" cy="96" r="3"/><circle cx="262" cy="124" r="3"/><circle cx="246" cy="146" r="3"/><circle cx="280" cy="146" r="3"/>
+              </g>
+            </svg>
+          </div>
+          <div class="card-body">
+            <span class="cat">Classical CV</span>
+            <h3>Product Recognition: Local Feature Matching &amp; Pose Estimation</h3>
+            <p class="result"><b>SIFT + RANSAC</b> homography, no deep learning</p>
+            <p>Finds every copy of a book in a shelf photo, robust to occlusion, with non-maximum suppression for multiple instances.</p>
+            <span class="stack">OpenCV · FLANN · RANSAC</span>
+            <div class="more"><a href="https://github.com/Shervinrtd/Book-Product-Recognition" target="_blank" rel="noopener">View code →</a></div>
+          </div>
+        </article>
+      </div>
+      <p class="see-all">See the complete list of projects on <a href="https://github.com/Shervinrtd?tab=repositories" target="_blank" rel="noopener">GitHub →</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="sec-title">
+        <h2>Contact</h2>
+        <p>I'm happy to talk about NLP, RAG, AI security or anything else. Email is the fastest way to reach me.</p>
+      </div>
+      <div class="contact-layout">
+      <div class="contact">
+        <div class="c-card">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+          <h3>Email</h3>
+          <p id="email">alirezashahidiani@gmail.com</p>
+          <button type="button" id="copy">Copy email</button>
+          <p class="status" id="status" role="status"></p>
+        </div>
+        <div class="c-card">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.064 2.064 0 1 1 0-4.128 2.064 2.064 0 0 1 0 4.128zm1.782 13.019H3.555V9h3.564v11.452z"/></svg></span>
+          <h3>LinkedIn</h3>
+          <p><a href="https://www.linkedin.com/in/alireza-shahidiani/" target="_blank" rel="noopener">alireza-shahidiani</a></p>
+        </div>
+        <div class="c-card">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18 3 12l6-6M15 6l6 6-6 6"/></svg></span>
+          <h3>GitHub</h3>
+          <p><a href="https://github.com/Shervinrtd" target="_blank" rel="noopener">Shervinrtd</a></p>
+        </div>
+        <div class="c-card">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+          <h3>Location</h3>
+          <p>Bologna, Italy</p>
+        </div>
+        </div>
+        <form class="cform" id="cform" novalidate>
+          <div class="row2">
+            <div class="field"><label for="cf-name">Name</label><input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Your name" required></div>
+            <div class="field"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+          </div>
+          <div class="field half"><label for="cf-subject">Subject</label><input id="cf-subject" name="subject" type="text" placeholder="How can I help?"></div>
+          <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" name="message" placeholder="Tell me about your idea..." required></textarea></div>
+          <p class="form-error" id="cf-error" role="alert"></p>
+          <button class="send" type="submit">Send message <span aria-hidden="true">↗</span></button>
+          <div class="sent" id="cf-sent" hidden>
+            <h3>Your message is ready</h3>
+            <p>Send it to <b>alirezashahidiani@gmail.com</b>. Open it in your email app, or copy it and paste it into any email.</p>
+            <div class="actions">
+              <a id="cf-mailto" href="mailto:alirezashahidiani@gmail.com">Open in email app</a>
+              <button type="button" id="cf-copy">Copy message</button>
+            </div>
+            <p class="status" id="cf-status" role="status"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>© 2026 Alireza Shahidiani</span>
+    <span>Bologna, Italy</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* neural network background */
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d');
+  let W=0, H=0, nodes=[], color='#A3AEC0', accent='#1554C8';
+  function readColors(){ const cs=getComputedStyle(document.documentElement); color=cs.getPropertyValue('--node').trim()||color; accent=cs.getPropertyValue('--accent').trim()||accent; }
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1, 2);
+    W=canvas.clientWidth; H=canvas.clientHeight;
+    canvas.width=W*dpr; canvas.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(110, Math.max(35, W*H/14000)));
+    nodes=Array.from({length:n}, ()=>({x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25, r:Math.random()*1.8+1, hot:Math.random()<.08}));
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const max=130;
+    for(let i=0;i<nodes.length;i++){
+      const a=nodes[i];
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j], dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
+        if(d<max){ ctx.globalAlpha=(1-d/max)*.55; ctx.strokeStyle=(a.hot||b.hot)?accent:color; ctx.lineWidth=.7; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+      }
+    }
+    for(const p of nodes){ ctx.globalAlpha=p.hot?.9:.7; ctx.fillStyle=p.hot?accent:color; ctx.beginPath(); ctx.arc(p.x,p.y,p.hot?p.r+1:p.r,0,Math.PI*2); ctx.fill(); }
+    ctx.globalAlpha=1;
+  }
+  function step(){
+    for(const p of nodes){ p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>W) p.vx*=-1; if(p.y<0||p.y>H) p.vy*=-1; }
+    draw(); requestAnimationFrame(step);
+  }
+  readColors(); resize();
+  if(reduce){ draw(); } else { requestAnimationFrame(step); }
+  addEventListener('resize', ()=>{ resize(); draw(); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ readColors(); draw(); });
+  new MutationObserver(()=>{ readColors(); draw(); }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+  /* typed roles */
+  const roles=['an AI Engineer','an NLP Researcher','an LLM Security Researcher','a Backend Developer','a Student at UniBo'];
+  const el=document.getElementById('typed');
+  if(!reduce){
+    let r=0, i=roles[0].length, del=true;
+    setTimeout(function tick(){
+      const word=roles[r];
+      if(del){ i--; el.textContent=word.slice(0,i); if(i<=0){ del=false; r=(r+1)%roles.length; } setTimeout(tick, 45); }
+      else{ i++; el.textContent=roles[r].slice(0,i); if(i>=roles[r].length){ del=true; setTimeout(tick, 2000); } else setTimeout(tick, 85); }
+    }, 2200);
+  }
+
+  /* active nav */
+  const links=[...document.querySelectorAll('.rail a')];
+  const io=new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.toggle('active', l.getAttribute('href')==='#'+e.target.id)); } }); }, {rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('main > section[id]').forEach(s=>io.observe(s));
+
+  /* portfolio filter */
+  const btns=[...document.querySelectorAll('.filters button')];
+  const cards=[...document.querySelectorAll('#grid .card')];
+  btns.forEach(b=>b.addEventListener('click', ()=>{
+    const f=b.dataset.filter;
+    btns.forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    cards.forEach(c=>{ c.hidden = !(f==='all' || c.dataset.cat===f); });
+  }));
+
+  /* contact form */
+  const WEB3FORMS_KEY = '';
+  const form=document.getElementById('cform');
+  const f={name:document.getElementById('cf-name'), email:document.getElementById('cf-email'), subject:document.getElementById('cf-subject'), msg:document.getElementById('cf-msg')};
+  const err=document.getElementById('cf-error'), sent=document.getElementById('cf-sent'), mailto=document.getElementById('cf-mailto'), cst=document.getElementById('cf-status');
+  let composed='';
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const problems=[];
+    Object.values(f).forEach(el=>el.removeAttribute('aria-invalid'));
+    if(!f.name.value.trim()){ problems.push('your name'); f.name.setAttribute('aria-invalid','true'); }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())){ problems.push('a valid email'); f.email.setAttribute('aria-invalid','true'); }
+    if(!f.msg.value.trim()){ problems.push('a message'); f.msg.setAttribute('aria-invalid','true'); }
+    if(problems.length){ err.textContent='Please add '+problems.join(', ')+'.'; sent.hidden=true; return; }
+    err.textContent='';
+    const subject=f.subject.value.trim()||'Hello from your portfolio';
+    const body=f.msg.value.trim()+'\n\n'+f.name.value.trim()+'\n'+f.email.value.trim();
+    composed='To: alirezashahidiani@gmail.com\nSubject: '+subject+'\n\n'+body;
+    mailto.href='mailto:alirezashahidiani@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    cst.textContent='';
+    if(WEB3FORMS_KEY){
+      const btn=form.querySelector('.send'); btn.disabled=true; btn.firstChild.textContent='Sending… ';
+      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+        body:JSON.stringify({access_key:WEB3FORMS_KEY,name:f.name.value.trim(),email:f.email.value.trim(),subject:subject,message:f.msg.value.trim(),from_name:'Portfolio contact form'})})
+        .then(r=>r.json()).then(d=>{
+          if(d.success){ form.reset(); sent.hidden=false; sent.querySelector('h3').textContent='Thanks, your message was sent'; sent.querySelector('p').textContent='I usually reply within a couple of days.'; sent.querySelector('.actions').hidden=true; }
+          else { throw new Error(d.message||'failed'); }
+        }).catch(()=>{ err.textContent='Your message could not be sent. Use the buttons below to email me instead.'; sent.hidden=false; })
+        .finally(()=>{ btn.disabled=false; btn.firstChild.textContent='Send message '; });
+      return;
+    }
+    sent.hidden=false;
+  });
+  document.getElementById('cf-copy').addEventListener('click', ()=>{
+    const ok=()=>{ cst.textContent='Message copied. Paste it into an email to alirezashahidiani@gmail.com.'; };
+    const fail=()=>{ cst.textContent='Copying is blocked here. Select your message in the form and copy it with Ctrl+C or ⌘C.'; };
+    try{ navigator.clipboard.writeText(composed).then(ok, fail); }catch(e){ fail(); }
+  });
+
+  /* copy email */
+  document.getElementById('copy').addEventListener('click', ()=>{
+    const em=document.getElementById('email'), st=document.getElementById('status');
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents(em); const s=getSelection(); s.removeAllRanges(); s.addRange(r); st.textContent='Email selected. Press Ctrl+C or ⌘C to copy.'; };
+    try{ navigator.clipboard.writeText(em.textContent.trim()).then(()=>{ st.textContent='Email copied.'; }, fallback); }catch(e){ fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
